@@ -1,0 +1,20 @@
+{{template "header.html" . }}
+
+<section>
+    <H1>Ethernet/IP Class 3</H1>
+    {{ range .Conf.CIPClass3 }}
+    <ol>
+        <li>
+
+	        <a href="/Providers/CIPClass3/{{.Name}}/Edit/">{{ .Name }}</a>
+	        {{ .Address  }}
+            {{ .Path }}
+            {{ .Enable }}
+
+        </li>
+    </ol>
+    {{ end }}
+    <a href="/providers/CIPClass3/Add/">New</a>
+</section>
+
+{{template "footer.html" . }}

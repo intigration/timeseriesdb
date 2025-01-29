@@ -1,0 +1,3 @@
+{{ range $k, $v := .}}
+<label for="{{$k}}">{{$k}}</label><input name="{{$k}}" value="{{$v}}">
+{{end}}

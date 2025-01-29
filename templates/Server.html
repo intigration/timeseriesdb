@@ -1,0 +1,17 @@
+{{template "header.html" . }}
+
+<form action="." method="POST">
+    <header>
+        <h2>Server Config</h2>
+    </header>
+    <label for="Host">Host:</label>
+    <input type="text" id="host" name="host" size="20" value="{{.Conf.Host}}">
+    <label for="Port">Port:</label>
+    <input type="text" id="Port" name="Port" size="20" value="{{.Conf.Port}}">
+    <label for="RestartDelay">Restart Delay:</label>
+    <input type="text" id="RestartDelay" name="RestartDelay" size="20" value="{{.Conf.RestartDelay}}">
+    <button type="submit">Submit</button>
+</form>
+
+
+{{template "footer.html" . }}

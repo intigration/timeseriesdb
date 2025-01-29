@@ -1,0 +1,16 @@
+
+{{template "header.html" . }}
+
+<h1> {{.Conf.Name}}</h1>
+{{$name := .Conf.Name}}
+
+<p>
+{{.Conf.Name}}
+{{.Conf.Server}}
+{{.Cong.Token}}
+{{.Conf.Org}}
+{{.Conf.Bucket}}
+</p>
+
+
+{{template "footer.html" . }}

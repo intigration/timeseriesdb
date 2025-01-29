@@ -1,0 +1,11 @@
+{{template "header.html" . }}
+
+<h1> {{.Conf.Name}}</h1>
+{{$name := .Conf.Name}}
+
+<form action=".", method="POST">
+{{ .Conf.RenderConfig }}
+<button type="submit">Save</button>
+</form>
+
+{{template "footer.html" . }}

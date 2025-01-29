@@ -1,0 +1,16 @@
+{{template "header.html" . }}
+
+<h1> {{.Conf.Name}}</h1>
+{{$name := .Conf.Name}}
+
+<p>
+{{.Conf.Name}}
+{{.Conf.Address}}
+{{.Conf.Path}}
+{{.Conf.Enable}}
+{{.Conf.DefaultRate}}
+</p>
+
+{{ .Conf.RenderEndpoints }}
+
+{{template "footer.html" . }}

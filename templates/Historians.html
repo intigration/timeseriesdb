@@ -1,0 +1,56 @@
+
+{{template "header.html" . }}
+
+<section>
+    <header>
+    <H1>Influx DB</H1>
+</header>
+    <ol>
+    {{ range .Conf.Influx }}
+        <li>
+	        <a href="/Historians/Influx/{{.Name}}/Edit/">{{ .Name }}</a>
+        </li>
+    {{ end }}
+        <li>
+            <a href="/Historians/Influx/Add/">New</a>
+        </li>
+    </ol>
+    </section>
+
+    <section>
+        <header>
+    <H1>JSON</H1>
+</header>
+    <ol>
+    {{ range .Conf.JSON }}
+        <li>
+	        <a href="/Historians/JSON/{{.Name}}/Edit/">{{ .Name }}</a>
+        </li>
+    {{ end }}
+        <li>
+            <a href="/Historians/JSON/Add/">New</a>
+        </li>
+    </ol>
+    </section>
+
+
+
+    <section>
+        <header>
+    <H1>Logging</H1>
+</header>
+    <ol>
+    {{ range .Conf.Logging }}
+        <li>
+	        <a href="/Historians/Logging/{{.Name}}/Edit/">{{ .Name }}</a>
+        </li>
+    {{ end }}
+        <li>
+            <a href="/providers/Logging/Add/">New</a>
+        </li>
+    </ol>
+    </section>
+
+</section>
+
+{{template "footer.html" . }}
