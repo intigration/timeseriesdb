@@ -1,4 +1,4 @@
-package main
+package timeseriesdb
 
 import (
 	"bytes"
@@ -31,11 +31,11 @@ func (config *ConfigCIPClass3) Init(ctx context.Context, h map[string]Historian)
 func (config *ConfigCIPClass3) Run(ctx context.Context, h map[string]Historian) {
 	var err error
 	client := gologix.NewClient(config.Address)
-	client.Path, err = gologix.ParsePath(config.Path)
-	if err != nil {
-		log.Printf("problem starting CipClass3 Client %s: %v", config.PLCName, err)
-		return
-	}
+	// client.Path, err = gologix.ParsePath(config.Path)
+	// if err != nil {
+	// 	log.Printf("problem starting CipClass3 Client %s: %v", config.PLCName, err)
+	// 	return
+	// }
 
 	// split the endpoints up by poll rate
 	poll_groups := make(map[time.Duration][]EndpointCIPClass3)
@@ -90,7 +90,7 @@ func (config *ConfigCIPClass3) PollGroup(ctx context.Context, client *gologix.Cl
 		case <-t.C:
 			hd := make([]HistorianData, len(endpoints))
 			ts := time.Now()
-			values, err := client.ReadList(tags, types)
+			values, err := client.ReadList(tags, types, nil)
 			if err != nil {
 				log.Printf("problem reading %s at %v: %v", config.PLCName, rate, err)
 				continue

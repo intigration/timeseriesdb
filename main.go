@@ -1,4 +1,4 @@
-package main
+package timeseriesdb
 
 import (
 	"context"
@@ -40,7 +40,7 @@ type System struct {
 
 var system System
 
-func main() {
+func init() {
 
 	system.State = StateStartup
 	flag.Parse()
