@@ -12,7 +12,7 @@ import (
 	"github.com/influxdata/influxdb-client-go/v2/api"
 )
 
-type ConfigHistorianInflux struct {
+type ConfigInflux struct {
 	HistorianName string
 	Server        string
 	Token         string
@@ -20,29 +20,29 @@ type ConfigHistorianInflux struct {
 	Bucket        string
 }
 
-func (conf ConfigHistorianInflux) Init(ctx context.Context, histmap map[string]Historian) {
-	if conf.HistorianName == "" {
+func (config ConfigInflux) Init(ctx context.Context, histmap map[string]Historian) {
+	if config.HistorianName == "" {
 		log.Print("Influx Historian missing a name.")
 		return
 	}
-	h, err := NewHistorianInflux(
-		conf.HistorianName,
-		conf.Server, // server
-		conf.Token,  // token
-		conf.Org,    // organization
-		conf.Bucket, // bucket
+	h, err := NewInflux(
+		config.HistorianName,
+		config.Server, // server
+		config.Token,  // token
+		config.Org,    // organization
+		config.Bucket, // bucket
 	)
 	if err != nil {
-		log.Printf("Failure to load historian %s: %v", conf.HistorianName, err)
+		log.Printf("Failure to load historian %s: %v", config.HistorianName, err)
 		return
 	}
-	histmap[conf.HistorianName] = h
+	histmap[config.HistorianName] = h
 	go h.Run(ctx)
-	log.Printf("Historian Connected %s: %v", conf.HistorianName, h)
+	log.Printf("Historian Connected %s: %v", config.HistorianName, h.Client)
 }
 
-func NewHistorianInflux(name, server, token, org, bucket string) (*HistorianInflux, error) {
-	h := new(HistorianInflux)
+func NewInflux(name, server, token, org, bucket string) (*INflux, error) {
+	h := new(INflux)
 	h.Name = name
 	h.c = make(chan []HistorianData, 1024)
 	h.Client = influxdb2.NewClient(server, token)
@@ -56,7 +56,7 @@ func NewHistorianInflux(name, server, token, org, bucket string) (*HistorianInfl
 }
 
 // this only stores float64s!!!
-type HistorianInflux struct {
+type INflux struct {
 	Name     string
 	Server   string
 	Token    string
@@ -67,15 +67,15 @@ type HistorianInflux struct {
 	Client   influxdb2.Client
 }
 
-func (h *HistorianInflux) Close() {
+func (h *INflux) Close() {
 	log.Printf("Closing Influx Historian %s", h.Name)
 }
 
-func (h *HistorianInflux) C() chan<- []HistorianData {
+func (h *INflux) C() chan<- []HistorianData {
 	return h.c
 }
 
-func (h *HistorianInflux) Run(ctx context.Context) {
+func (h *INflux) Run(ctx context.Context) {
 	defer h.Close()
 
 	for {
@@ -93,8 +93,16 @@ func (h *HistorianInflux) Run(ctx context.Context) {
 		}
 	}
 }
-
-func (h *ConfigHistorianInflux) RenderConfig() template.HTML {
+func (e *ConfigCIPClass3) RenderPOints() template.HTML {
+	w := new(bytes.Buffer)
+	err := templates.ExecuteTemplate(w, "Provider_Influx.html", *e)
+	if err != nil {
+		log.Printf("problem with template. %v", err)
+		return ""
+	}
+	return template.HTML(w.String())
+}
+func (h *ConfigInflux) RenderConfig() template.HTML {
 	encoder := schema.NewEncoder()
 
 	form := make(map[string][]string)
@@ -118,13 +126,13 @@ func (h *ConfigHistorianInflux) RenderConfig() template.HTML {
 
 }
 
-func (h ConfigHistorianInflux) Name() string {
+func (h ConfigInflux) Name() string {
 	return h.HistorianName
 }
-func (h ConfigHistorianInflux) String() string {
+func (h ConfigInflux) String() string {
 	return h.Name()
 }
-func (h *ConfigHistorianInflux) Update(form url.Values) error {
+func (h *ConfigInflux) Update(form url.Values) error {
 
 	decoder := schema.NewDecoder()
 	err := decoder.Decode(h, form)
@@ -135,16 +143,16 @@ func (h *ConfigHistorianInflux) Update(form url.Values) error {
 	return err
 }
 
-var routerInflux = apiConfigEditor[*ConfigHistorianInflux]{
+var crouter = apiConfigEditor[*ConfigInflux]{
 	ConfTypeName: "Influx DB",
-	Path:         "/Historians/Influx",
+	Path:         "/Providers/Data",
 }
 
-func routerSetupInflux() {
-	routerInflux.Init(router)
-	routerInflux.Confs = system.WorkingConfig.Historians.Influx
+func rInflux() {
+	crouter.Init(router)
+	crouter.Confs = system.WorkingConfig.DataProviders.InfluxData
 }
 
 func init() {
-	subrouters = append(subrouters, routerSetupInflux)
+	subrouters = append(subrouters, rInflux)
 }

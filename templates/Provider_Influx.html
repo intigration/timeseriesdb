@@ -1,0 +1,71 @@
+{{$name := .PLCName}}
+
+<table>
+    <tr><thead>
+        <th><div style="resize: horizontal; overflow:auto;">ID</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Name</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Tag</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Rate</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Type</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Historian</div></th>
+        <th><div style="resize: horizontal; overflow:auto;">Actions</div></th>
+    </thead></tr>
+    <tbody>
+{{ range $i, $e := .EndpointList }}
+    <tr>
+    <td>
+        {{$i}}
+        <input type="hidden" value="{{$i}}" name="Index" form="Endpoint_{{$i}}">
+    </td>
+    <td>
+	<input type="text" value="{{.Name}}" form="Endpoint_{{$i}}" name="Name">
+    </td><td>
+	<input type="text" value="{{ .TagName }}" form="Endpoint_{{$i}}" name="TagName">
+    </td><td>
+	<input type="text" value="{{ .Rate }}" style="width:5em;" form="Endpoint_{{$i}}" name="Rate">
+    </td><td>
+        <select value ="{{ .TypeAsInt }}" form="Endpoint_{{$i}}" name="Type">
+            <option value = 0 {{ if eq .TypeAsInt 0 }}selected{{end}}>Unknown</option>
+            <option value = 160 {{if eq .TypeAsInt 160}}selected{{end}}>Struct</option>
+            <option value = 193 {{if eq .TypeAsInt 193}}selected{{end}}>BOOL</option>
+            <option value = 194 {{if eq .TypeAsInt 194}}selected{{end}}>SINT</option>
+            <option value = 195 {{if eq .TypeAsInt 195}}selected{{end}}>INT</option>
+            <option value = 196 {{if eq .TypeAsInt 196}}selected{{end}}>DINT</option>
+            <option value = 197 {{if eq .TypeAsInt 197}}selected{{end}}>LINT</option>
+            <option value = 202 {{if eq .TypeAsInt 202}}selected{{end}}>Real</option>
+            </select>
+
+    </td><td>
+	<input type="text" value="{{ .Historian }}" form="Endpoint_{{$i}}" name="Historian">
+    </td>
+    <td>
+        <button type="submit"  value="Save" form="Endpoint_{{$i}}" name="action" title="Save">&#x1F4BE;</button>
+        <button type="submit"  value="Delete" form="Endpoint_{{$i}}" name="action" title="Delete">&#x1F5D1;</button>
+
+    </td>
+</tr>
+{{ end }}
+</tbody>
+<tr>
+    <td>
+        <input type="hidden" value="-1" name="Index" form="Endpoint_-1">
+    </td>
+    <td>
+    </td><td>
+    </td><td>
+    </td><td>
+    </td><td>
+    </td>
+    <td>
+        <button type="submit"  value="New" form="Endpoint_-1" name="action" title="New">+</button>
+
+    </td>
+</tr>
+</table>
+
+{{/* now we set up all the forms for the table rows.  We have to set them up here instead
+    of in the table because of course HTML won't let you do that. */}}
+{{ range $i, $e := .EndpointList }}
+        <form id="Endpoint_{{$i}}" action="/Providers/CIPClass3/{{$name}}/EditEndpoint/" method="POST" hidden="true"></form>
+{{ end }}
+        <form id="Endpoint_-1"     action="/Providers/CIPClass3/{{$name}}/NewEndpoint/" method="POST" hidden="true"></form>

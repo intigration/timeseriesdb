@@ -8,7 +8,7 @@
 		"CIPClass3": [
 			{
 				"PLCName": "GaragePLC",
-				"Address": "192.168.2.241",
+				"Address": "192.168.11.25",
 				"Path": "1,0",
 				"Enable": true,
 				"DefaultRate": 1000000000,
@@ -27,7 +27,7 @@
 						"Rate": 1000000000,
 						"TagType": 202,
 						"Value": 0,
-						"Historian": "Weather"
+						"Historian": "Influx"
 					},
 					{
 						"Name": "ShedRH",
@@ -95,7 +95,7 @@
 				"HistorianName": "Influx",
 				"Server": "https://us-east-1-1.aws.cloud2.influxdata.com",
 				"Token": "TJKOIk0HAxeD6H-fvTDS3O4LHjTjFkqHzfWH7bvzXRBpv_S7fMc-_EabcOIvy-SrI41uD7R_h2l0_SnDGPxvfg==",
-				"Org": "Lean Automation",
+				"Org": "Dev",
 				"Bucket": "data"
 			}
 		],

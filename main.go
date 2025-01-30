@@ -41,6 +41,7 @@ type System struct {
 var system System
 
 func main() {
+
 	system.State = StateStartup
 	flag.Parse()
 
@@ -91,6 +92,9 @@ func main() {
 		////////////////////////
 		for i := range system.ActiveConfig.DataProviders.CIPClass3 {
 			system.ActiveConfig.DataProviders.CIPClass3[i].Init(system.ActiveContext, Historians)
+		}
+		for i := range system.ActiveConfig.DataProviders.InfluxData {
+			system.ActiveConfig.DataProviders.InfluxData[i].Init(system.ActiveContext, Historians)
 		}
 
 		system.State = StateRunning
