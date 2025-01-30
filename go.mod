@@ -1,4 +1,4 @@
-module intigration/timeseries
+module github.com/intigration/timeseries
 
 go 1.23.4
 
