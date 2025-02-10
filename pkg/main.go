@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := datasource.Manage("factry-historian-datasource", historianDataSource.NewDataSource, datasource.ManageOpts{}); err != nil {
+	if err := datasource.Manage("historian-datasource", historianDataSource.NewDataSource, datasource.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)
 	}

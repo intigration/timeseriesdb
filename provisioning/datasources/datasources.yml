@@ -2,7 +2,7 @@ apiVersion: 1
 
 datasources:
   - name: 'Factry Historian'
-    type: 'factry-historian-datasource'
+    type: 'historian-datasource'
     access: proxy
     isDefault: true
     orgId: 1
